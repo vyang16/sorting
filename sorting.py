@@ -45,39 +45,57 @@ def merge_sort_recursive(i1, i2, elems):
 
     if i1 >= i2:
         return
-    else:
 
-        m = (i2+i1-1) // 2
+    m = (i2+i1-1) // 2
 
-        yield from merge_sort_recursive(i1, m, elems)
-        yield from merge_sort_recursive(m+1, i2, elems)
+    yield from merge_sort_recursive(i1, m, elems)
+    yield from merge_sort_recursive(m+1, i2, elems)
 
-        # merge sorted halfs
+    # merge sorted halfs
 
-        sub1 = elems[i1:m+1].copy()
-        sub2 = elems[m+1:i2+1].copy()
+    sub1 = elems[i1:m+1].copy()
+    sub2 = elems[m+1:i2+1].copy()
 
-        c1 = 0
-        c2 = 0
-        c = i1
+    c1 = 0
+    c2 = 0
+    c = i1
 
-        while c1 < len(sub1) and c2 < len(sub2):
-            if sub1[c1] <= sub2[c2]:
-                elems[c] = sub1[c1]
-                c1 += 1
-            else:
-                elems[c] = sub2[c2]
-                c2 += 1
-            c += 1
-        
-        # copy remaining 
-        if c1 < len(sub1):
-            elems[c:i2+1] = sub1[c1:]
-        elif c2 < len(sub2):
-            elems[c:i2+1] = sub2[c2:]
+    while c1 < len(sub1) and c2 < len(sub2):
+        if sub1[c1] <= sub2[c2]:
+            elems[c] = sub1[c1]
+            c1 += 1
+        else:
+            elems[c] = sub2[c2]
+            c2 += 1
+        c += 1
+    
+    # copy remaining 
+    if c1 < len(sub1):
+        elems[c:i2+1] = sub1[c1:]
+    elif c2 < len(sub2):
+        elems[c:i2+1] = sub2[c2:]
 
 def quick_sort(elems):
-    raise NotImplementedError
+    yield from quick_sort_recursive(elems, 0, len(elems)-1)
+    yield -1, None
+
+def quick_sort_recursive(elems, l, r):
+    if l >= r:
+        return
+    
+    p = elems[r]
+    i = l
+
+    for j in range(l, r+1):
+        if elems[j] < p:
+            swap(elems, i, j)
+            i += 1
+            
+    yield(0, [i])
+    # put pivot to it's position
+    swap(elems, i, r)
+    yield from quick_sort_recursive(elems, l, i-1)
+    yield from quick_sort_recursive(elems, i+1, r)
 
 def heap_sort(elems):
     raise NotImplementedError
