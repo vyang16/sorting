@@ -46,7 +46,7 @@ def game_loop(n, algorithmName):
         # run step
         if keys[pygame.K_RIGHT]:
             if not finish and idle:
-                i, special = next(sort_iter)  
+                i, special = next(sort_iter)
                 update(screen, elements, special)
                 if i == -1:
                     finish = True
@@ -59,7 +59,7 @@ def game_loop(n, algorithmName):
 
         if not idle:
             if not finish:
-                i, special = next(sort_iter)  
+                i, special = next(sort_iter)
                 update(screen, elements, special)
 
                 if(i == -1):
@@ -84,7 +84,8 @@ def update(screen, array, special=None):
     # draw elements that are currently changed
     if special is not None:
         for i in special:
-            pygame.draw.rect(screen, CHANGE_COLOR, (i*h, 0, h * SPACING, array[i] * b))
+            if i < n:
+                pygame.draw.rect(screen, CHANGE_COLOR, (i*h, 0, h * SPACING, array[i] * b))
 
 
 def main():

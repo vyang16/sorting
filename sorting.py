@@ -37,7 +37,44 @@ def insertion_sort(elems):
     yield -1, None
 
 def merge_sort(elems):
-    raise NotImplementedError
+    yield from merge_sort_recursive(0, len(elems) - 1, elems)
+    yield -1, None
+
+def merge_sort_recursive(i1, i2, elems):
+    yield (0, [i1, i2])
+
+    if i1 >= i2:
+        return
+    else:
+
+        m = (i2+i1-1) // 2
+
+        yield from merge_sort_recursive(i1, m, elems)
+        yield from merge_sort_recursive(m+1, i2, elems)
+
+        # merge sorted halfs
+
+        sub1 = elems[i1:m+1].copy()
+        sub2 = elems[m+1:i2+1].copy()
+
+        c1 = 0
+        c2 = 0
+        c = i1
+
+        while c1 < len(sub1) and c2 < len(sub2):
+            if sub1[c1] <= sub2[c2]:
+                elems[c] = sub1[c1]
+                c1 += 1
+            else:
+                elems[c] = sub2[c2]
+                c2 += 1
+            c += 1
+        
+        # copy remaining 
+        if c1 < len(sub1):
+            elems[c:i2+1] = sub1[c1:]
+        elif c2 < len(sub2):
+            elems[c:i2+1] = sub2[c2:]
 
 def quick_sort(elems):
     raise NotImplementedError
